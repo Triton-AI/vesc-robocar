@@ -77,6 +77,9 @@ VescDriver::VescDriver(const rclcpp::NodeOptions & options)
     return;
   }
 
+  // frame_id
+  frame_id_ = declare_parameter<std::string>("frame_id", "vesc");
+
   // create vesc state (telemetry) publisher
   state_pub_ = create_publisher<VescStateStamped>("sensors/core", rclcpp::QoS{10});
   imu_pub_ = create_publisher<VescImuStamped>("sensors/imu", rclcpp::QoS{10});
@@ -208,7 +211,9 @@ void VescDriver::vescPacketCallback(const std::shared_ptr<VescPacket const> & pa
     auto imu_msg = VescImuStamped();
     auto std_imu_msg = Imu();
     imu_msg.header.stamp = now();
+    imu_msg.header.frame_id = frame_id_;
     std_imu_msg.header.stamp = now();
+    std_imu_msg.header.frame_id = frame_id_;
 
     imu_msg.imu.ypr.x = imuData->roll();
     imu_msg.imu.ypr.y = imuData->pitch();
