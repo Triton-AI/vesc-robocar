@@ -90,6 +90,8 @@ private:
   CommandLimit position_limit_;
   CommandLimit servo_limit_;
 
+  std::string frame_id_;
+
   // ROS services
   rclcpp::Publisher<VescStateStamped>::SharedPtr state_pub_;
   rclcpp::Publisher<VescImuStamped>::SharedPtr imu_pub_;
